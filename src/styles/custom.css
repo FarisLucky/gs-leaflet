@@ -1,0 +1,63 @@
+.cs-vselect {
+    font-size: 12px !important;
+    font-weight: 600;
+}
+
+.cs-vselect .vs__dropdown-toggle {
+    border-width: 2px;
+    padding: .4rem 0;
+    border-color: var(--color-primary) !important;
+}
+
+.multiselect,
+.multiselect__input,
+.multiselect__single {
+    font-size: 12px !important;
+}
+
+.multiselect__placeholder {
+    font-size: 13px !important;
+}
+
+.section-reset {
+    padding: 1rem 0 !important;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+    transition: .5s;
+}
+
+.slide-enter,
+.slide-leave-to {
+    transform: scaleY(0);
+}
+
+.slide-fade-enter-active {
+    transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+    transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+    transform: translateX(20px);
+    opacity: 0;
+}
+
+#vs1__listbox {
+    z-index: 9999;
+}
+
+.list-enter-active,
+.list-leave-active {
+    transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+    opacity: 0;
+    transform: translateX(30px);
+}
