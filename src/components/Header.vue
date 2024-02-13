@@ -22,11 +22,14 @@
           class="mobile-nav-toggle mobile-nav-hide bi bi-x"
           @click="()=> rightVal = false"
         ></i>
-        <!-- <ul>
+        <ul>
           <li>
-            <router-link :to="{ name: 'LeafletList' }">Leaflet</router-link>
+            <a
+              href="javascript(0)"
+              @click.prevent="windowReload"
+            >Refresh</a>
           </li>
-        </ul> -->
+        </ul>
       </nav><!-- .navbar -->
 
       <i
@@ -46,6 +49,11 @@ export default {
     return {
       rightVal: false,
     };
+  },
+  methods: {
+    windowReload() {
+      location.reload(true);
+    },
   },
 };
 </script>

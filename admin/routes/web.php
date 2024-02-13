@@ -14,12 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.home');
-})->name('home');
+Auth::routes(['register' => false]);
 
-Route::resource('leaflet', LeafletController::class)->except('edit')->names('leaflets');
-Route::post('/leaflet/upload-file/{id?}', [LeafletController::class, 'uploadFile'])->name('leaflet.upload_file');
-Route::get('/leaflet/file/{name}', [LeafletController::class, 'getFile'])->name('leaflet.file.data');
-Route::get('/leaflet/showFile/{leaflet_id}', [LeafletController::class, 'showFile'])->name('leaflet.showFile');
-Route::get('/leaflet/download/{leaflet_id}', [\App\Http\Controllers\Frontend\LeafletController::class, 'download']);
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Route::resource('leaflet', LeafletController::class)->except('edit')->names('leaflets');
+    Route::post('/leaflet/upload-file/{id?}', [LeafletController::class, 'uploadFile'])->name('leaflet.upload_file');
+    Route::get('/leaflet/file/{name}', [LeafletController::class, 'getFile'])->name('leaflet.file.data');
+    Route::get('/leaflet/showFile/{leaflet_id}', [LeafletController::class, 'showFile'])->name('leaflet.showFile');
+    Route::get('/leaflet/download/{leaflet_id}', [\App\Http\Controllers\Frontend\LeafletController::class, 'download']);
+});
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

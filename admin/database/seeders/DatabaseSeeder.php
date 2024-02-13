@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +14,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(LeafletSeeder::class);
+        User::create([
+            'name' => 'salman',
+            'email' => 'salman@gmail.com',
+            'username' => 'salman',
+            'password' => bcrypt('123'),
+        ]);
+        // $this->call(LeafletSeeder::class);
     }
 }

@@ -32,7 +32,6 @@
     <link rel="stylesheet" href="{{ asset('/dist/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
 
     <!-- Page CSS -->
-    <link rel="stylesheet" href="{{ asset('/dist/libs/css/pages/cards-advance.css') }}" />
     <link rel="stylesheet" href="{{ asset('/dist/css/custom.css') }}" />
 
     <!-- LOADING BAR -->
