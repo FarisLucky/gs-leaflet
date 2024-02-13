@@ -16,10 +16,8 @@
 
     <div class="container-xxl flex-grow-1">
         <!-- Basic Layout -->
-        <div class="row mb-1">
-            <div class="col-xl">
-                @include('leaflet.form')
-            </div>
+        <div class="mb-2">
+            @include('leaflet.form')
         </div>
         <div class="row">
             <!-- Website Analytics -->
@@ -37,27 +35,20 @@
                                 <table class="table leaflet" id="leaflet">
                                     <thead>
                                         <th>No</th>
+                                        <th>Tgl Dibuat</th>
                                         <th>Judul</th>
                                         <th>Deskripsi</th>
                                         <th>Unit</th>
-                                        <th>file</th>
                                         <th style="width: 8%">Aksi</th>
                                     </thead>
                                     <tbody>
                                         @foreach ($leaflets as $item)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $item->created_at->format('Y-m-d') }}</td>
                                                 <td>{{ $item->judul }}</td>
-                                                <td>{{ $item->unit }}</td>
                                                 <td>{{ $item->desc }}</td>
-                                                <td>
-                                                    <div class="mb-1">
-                                                        <a href="{{ route('leaflets.update', $item->id) }}"
-                                                            class="link-info edit">
-                                                            <i class="ti ti-eye mb-1"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
+                                                <td>{{ $item->unit }}</td>
                                                 <td>
                                                     <div class="mb-1">
                                                         <a href="{{ route('leaflets.update', $item->id) }}"
@@ -68,10 +59,8 @@
                                                             class="link-danger hapus">
                                                             <i class="ti ti-trash mb-1"></i>
                                                         </a>
-                                                        <a href="{{ route('leaflet.showFile', ['id' => $item->id]) }}"
-                                                            class="link-success upload"
-                                                            data-url-update="{{ route('leaflet.upload_file', ['id' => $item->id], false) }}"
-                                                            data-datatable="{{ route('api.leaflet.data_file', ['idLeaflet' => $item->id]) }}">
+                                                        <a href="{{ route('leaflet.showFile', ['leaflet_id' => $item->id]) }}"
+                                                            class="link-success" target="_blank">
                                                             <i class="ti ti-file-upload mb-1"></i>
                                                         </a>
                                                     </div>
@@ -87,49 +76,16 @@
             </div>
         </div>
     </div>
-    @include('leaflet.modal_upload')
 @endsection
 @prepend('javascript')
     <script src="{{ asset('dist/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
-    <script src="{{ asset('dist/libs/filepond/filepond.min.js') }}"></script>
-    <script src="{{ asset('dist/libs/filepond/filepond-plugin-file-validate-type.js') }}"></script>
-    <script src="{{ asset('dist/libs/filepond/filepond-plugin-file-validate-size.min.js') }}"></script>
-    <script src="{{ asset('dist/libs/filepond/filepond-plugin-image-preview.js') }}"></script>
-    <script>
-        var filepondVar = null
-
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-        function filepondInit() {
-            const selector = document.querySelector('.filepond');
-            const upload_url = selector.getAttribute('data-url')
-
-            // File Pond
-            FilePond.registerPlugin(
-                FilePondPluginFileValidateType,
-                FilePondPluginImagePreview,
-                FilePondPluginFileValidateSize
-            );
-
-            FilePond.setOptions({
-                allowImagePreview: true,
-                allowFileSizeValidation: true,
-                maxFileSize: '2MB',
-                acceptedFileTypes: ['image/*'],
-                labelFileTypeNotAllowed: 'File yang diupload harus Gambar',
-                allowMultiple: true,
-            });
-
-            filepond = FilePond.create(selector);
-
-            return filepond
-        }
-
-        filepondVar = filepondInit()
-    </script>
     <script>
         $(function() {
-            table = $('#leaflet').DataTable()
+            table = $('#leaflet').DataTable({
+                order: [
+                    [1, 'desc']
+                ]
+            })
         });
 
         $('#leaflet tbody').on('click', '.edit', function(e) {
@@ -137,9 +93,9 @@
 
             let data = table.row($(this).closest('tr')).data();
             let url = $(this).attr('href');
-            $('#leaflet_form input[name="judul"]').val(data[1]);
-            $('#leaflet_form select[name="unit"]').val(data[2]).change();
-            $('#leaflet_form input[name="desc"]').val(data[3]);
+            $('#leaflet_form input[name="judul"]').val(data[2]);
+            $('#leaflet_form select[name="unit"]').val(data[3]).change();
+            $('#leaflet_form input[name="desc"]').val(data[4]);
             $('.form_title').text('Update');
             $('#leaflet_form').attr('action', url);
             $('#leaflet_form input[name="_method"]').val('PUT');
@@ -161,40 +117,6 @@
                     alert('Gagal Delete')
                 });
             }
-        });
-        $('#leaflet tbody').on('click', '.upload', function(e) {
-            e.preventDefault();
-
-            const urlData = $(this).attr('href')
-            const urlUpdate = $(this).attr('data-url-update')
-            const urlDatatable = $(this).attr('data-datatable')
-            let urls = $('#urlDatatable').attr('data-datatable', urlDatatable)
-
-            $('#formUpload').attr('action', urlUpdate)
-
-            filepondVar.files = null;
-
-            filepondVar.setOptions({
-                files: null,
-                instantUpload: false,
-                server: {
-                    process: {
-                        url: urlUpdate,
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken,
-                        },
-                        onload: (response) => {
-                            console.log(JSON.parse(response))
-                            if (JSON.parse(response).code === 200) {
-                                console.log('berhasil')
-                                tableModal.ajax.reload()
-                            }
-                        },
-                    },
-                },
-            })
-
-            modal.show()
         });
     </script>
 @endprepend

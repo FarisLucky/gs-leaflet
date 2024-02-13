@@ -6,6 +6,7 @@ import vSelect from "vue-select";
 import VueAwesomePaginate from "vue-awesome-paginate";
 import VueProgressBar from "@aacassandra/vue3-progressbar";
 import easySpinner from 'vue-easy-spinner';
+import VueFullscreen from 'vue-fullscreen'
 
 import 'vue-awesome-paginate/dist/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -19,9 +20,9 @@ import 'vue3-carousel/dist/carousel.css'
 import 'vue-select/dist/vue-select.css';
 
 const options = {
-    color: "#0FB9B1",
+    color: "#34495e",
     failedColor: "#874b4b",
-    thickness: "5px",
+    thickness: "8px",
     transition: {
         speed: "0.5s",
         opacity: "0.7s",
@@ -43,5 +44,6 @@ app.use(easySpinner, {
     prefix: 'easy',
 })
 app.component("v-select", vSelect);
+app.use(VueFullscreen)
 
 app.mount('#app')

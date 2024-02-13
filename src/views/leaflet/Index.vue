@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 .list-leaflet {
   box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
   border: none;
@@ -8,21 +8,6 @@
 .list-leaflet span {
   font-size: 20px;
   font-weight: 600;
-}
-
-#search-leaflet {
-  padding-top: 0px;
-  margin-top: -3.7rem;
-  padding-bottom: 0.5rem;
-}
-
-.btn-view {
-  width: 80%;
-  margin-right: 5px;
-}
-
-.hero {
-  height: 45vh !important;
 }
 
 .card-body-cs {
@@ -47,37 +32,18 @@
     id="hero"
     class="hero"
   >
-    <div class="container-fluid position-relative cs-carousel">
-      <div class="row gy-5">
-        <div class="col-lg-12 p-0">
-          <Carousel>
-            <Slide
-              v-for="slide in 10"
-              :key="slide"
-            >
-              <div class="item img-item carousel__item">
-                <div class="carousel-cover container">
-                  <h3 class="carousel-title">Rumah Sakit <span class="carousel-gs">Graha Sehat</span></h3>
-                  <p class="carousel-subtitle">Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Distinctio
-                    repellat placeat ipsum id perferendis</p>
-                </div>
-                <div class="cvr-img">
-                  <img
-                    :src="cItem"
-                    class="img-fluid"
-                    data-aos="zoom-out"
-                    data-aos-delay="100"
-                  >
-                </div>
-              </div>
-            </Slide>
-
-            <template #addons>
-              <Navigation />
-              <Pagination />
-            </template>
-          </Carousel>
+    <div class="container container-cs position-relative h-100">
+      <div class="mb-1 mt-3 jumbotron row mx-0">
+        <div class="col-lg-6 p-3 cover">
+          <span class="title">RS GRAHA SEHAT</span>
+          <span class="subtitle">Kumpulan Leaflet RS Graha Sehat</span>
+        </div>
+        <div class="col-lg-6 cover-img">
+          <img
+            :src="img"
+            class="jumbotron-img"
+            style="max-width: 250px;"
+          >
         </div>
       </div>
     </div>
@@ -92,7 +58,7 @@
     </div>
   </section>
 
-  <section style="padding: 10px 0;">
+  <section style="padding: 0;">
     <div class="container container-cs">
       <router-view v-slot="{ Component }">
         <transition name="slide-fade">
@@ -106,9 +72,12 @@
 <script>
 import Detail from "./Detail.vue";
 import CariLeaflet from "@/views/leaflet/CariLeaflet.vue";
+import { useLeafletStore } from "@/stores/leaflets";
 
 import { Carousel, Navigation, Pagination, Slide } from "vue3-carousel";
 import cItem from "@/assets/img/bg-1.jpg";
+import { mapState } from "pinia";
+import img from "@/assets/img/book-material.png";
 
 export default {
   components: {
@@ -119,9 +88,13 @@ export default {
     CariLeaflet,
     Detail,
   },
+  computed: {
+    ...mapState(useLeafletStore, ["data"]),
+  },
   data() {
     return {
       cItem,
+      img,
     };
   },
 };

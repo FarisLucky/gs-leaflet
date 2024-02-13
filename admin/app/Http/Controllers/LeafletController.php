@@ -25,7 +25,23 @@ class LeafletController extends Controller
     public function store(StoreLeafletRequest $request)
     {
         try {
-            MLeaflet::create($request->validated());
+
+            $file = $request->file('filepond');
+            $name = $request->judul . '_' . Uuid::uuid4();
+            $ext = $file->getClientOriginalExtension();
+            $path = 'leaflets';
+            $fullName = $name . '.' . $ext;
+
+            $file->storeAs($path, $fullName);
+
+            $leaflet = MLeaflet::create($request->validated());
+
+            MFile::create([
+                'name' => $name,
+                'ext' => $ext,
+                'path' => $path,
+                'leaflet_id' => $leaflet->id,
+            ]);
 
             return redirect()->route('leaflets.index')->with(['success' => 'Tindakan Berhasil']);
         } catch (\Throwable $th) {
@@ -109,16 +125,17 @@ class LeafletController extends Controller
         ]);
     }
 
-    public function showFile($id)
+    public function showFile($leaflet_id)
     {
         try {
-            $mFile = MFile::find($id);
+            $mFile = MFile::where('leaflet_id', $leaflet_id)->firstOrFail();
 
-            dd(url(Storage::url($mFile->fullUrl)));
+            $file = Storage::path($mFile->fullUrl);
 
-            $file = 'storage/' . $mFile->fullUrl;
-
-            return response()->json(['data' => file($file)]);
+            return response()->file($file, [
+                "Content-Type" => "application/pdf",
+                "Content-Disposition" => 'inline; filename="' . $mFile->judul . '"'
+            ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'code' => Response::HTTP_INTERNAL_SERVER_ERROR,

@@ -1,13 +1,15 @@
 import axios from 'axios'
 // import app from "../main";
 
-const url = "http://localhost:8000/api/"; //WEB APACHE
+const url = "https://e-leaflet.gsrs.my.id/admin/api/"; //WEB APACHE
+const BASE_URL = "https://e-leaflet.gsrs.my.id/admin/"; //WEB APACHE
 
 const http = axios.create({
   baseURL: url,
   headers: {
     Accept: 'application/json',
   },
+  withCredentials: false
 })
 
 // http.interceptors.request.use((config) => {
@@ -20,4 +22,4 @@ const http = axios.create({
 //   return response;
 // });
 
-export { http, url }
+export { http, url, BASE_URL }

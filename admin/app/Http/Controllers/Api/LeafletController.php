@@ -14,7 +14,7 @@ class LeafletController extends Controller
 {
     public function index()
     {
-        $leaflets = MLeaflet::all();
+        $leaflets = MLeaflet::with('mFile')->get();
 
         return response()->json([
             'code' => 200,

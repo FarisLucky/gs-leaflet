@@ -20,12 +20,12 @@
 }
 
 .section-reset {
-    padding: 1rem 0 !important;
+    padding: 0 !important;
 }
 
 .slide-enter-active,
 .slide-leave-active {
-    transition: .5s;
+    transition: .2s;
 }
 
 .slide-enter,
@@ -38,7 +38,7 @@
 }
 
 .slide-fade-leave-active {
-    transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+    transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .slide-fade-enter-from,

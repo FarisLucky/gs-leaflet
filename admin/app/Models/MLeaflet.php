@@ -36,7 +36,7 @@ class MLeaflet extends Model
 
     public function mFile()
     {
-        return $this->hasMany(MFile::class, 'leaflet_id', 'id');
+        return $this->hasOne(MFile::class, 'leaflet_id', 'id');
     }
 
     public function delete()

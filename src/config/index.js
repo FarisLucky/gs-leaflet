@@ -1,2 +1,4 @@
-export const http = require('./http').http
-export const url = require('./http').url
+import { http, url } from './http'
+
+export const http = http
+export const url = url

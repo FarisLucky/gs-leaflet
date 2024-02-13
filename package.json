@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "dev-host": "vite --host",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -20,12 +21,15 @@
     "vue-awesome-paginate": "^1.1.46",
     "vue-axios": "^3.5.2",
     "vue-easy-spinner": "^0.1.0",
+    "vue-fullscreen": "^3.1.1",
     "vue-router": "^4.2.4",
     "vue-select": "^4.0.0-beta.6",
-    "vue3-carousel": "^0.3.1"
+    "vue3-carousel": "^0.3.1",
+    "vue3-pdf-app": "^1.0.3"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.3.1",
-    "vite": "^4.4.9"
+    "vite": "^4.4.9",
+    "vite-plugin-pwa": "^0.18.1"
   }
 }

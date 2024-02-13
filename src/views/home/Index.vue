@@ -1,11 +1,17 @@
 <template>
   <!-- ======= Hero Section ======= -->
-  <section id="hero" class="hero">
+  <section
+    id="hero"
+    class="hero"
+  >
     <div class="container-fluid position-relative cs-carousel">
       <div class="row gy-5">
         <div class="col-lg-12 p-0">
           <Carousel>
-            <Slide v-for="slide in 10" :key="slide">
+            <Slide
+              v-for="slide in 10"
+              :key="slide"
+            >
               <div class="item img-item carousel__item">
                 <div class="carousel-cover container">
                   <h3 class="carousel-title">Rumah Sakit <span class="carousel-gs">Graha Sehat</span></h3>
@@ -13,7 +19,13 @@
                     repellat placeat ipsum id perferendis</p>
                 </div>
                 <div class="cvr-img">
-                  <img :src="cItem" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="100">
+                  <img
+                    :src="cItem"
+                    class="img-fluid"
+                    alt=""
+                    data-aos="zoom-out"
+                    data-aos-delay="100"
+                  >
                 </div>
               </div>
               <!-- <div class="carousel__item cvr-img">{{ slide }}</div> -->
@@ -31,7 +43,7 @@
 
   <section id="search_dokter">
     <div class="container container-cs">
-      <TemukanDokter />
+      <!-- <TemukanDokter /> -->
     </div>
   </section>
   <!-- End Hero Section -->
@@ -45,8 +57,14 @@
     </section>
 
     <!-- ======= Clients Section ======= -->
-    <section id="clients" class="clients">
-      <div class="container" data-aos="zoom-out">
+    <section
+      id="clients"
+      class="clients"
+    >
+      <div
+        class="container"
+        data-aos="zoom-out"
+      >
         <div class="cs-header mb-0">
           <h4>Client Asuransi Kami</h4>
         </div>
@@ -67,10 +85,19 @@
     </section><!-- End Clients Section -->
 
     <!-- ======= Call To Action Section ======= -->
-    <section id="intro" class="call-to-action">
-      <div class="container text-center" data-aos="zoom-out">
+    <section
+      id="intro"
+      class="call-to-action"
+    >
+      <div
+        class="container text-center"
+        data-aos="zoom-out"
+      >
         <h3>Profil RS <span class="text-primary">Graha Sehat</span></h3>
-        <a href="https://www.youtube.com/watch?v=gg5gZDviOVo" class="glightbox play-btn"></a>
+        <a
+          href="https://www.youtube.com/watch?v=gg5gZDviOVo"
+          class="glightbox play-btn"
+        ></a>
         <p>Video profil perkenala graha sehat.
         </p>
         <!-- <a class="cta-btn" href="#">Play</a> -->
@@ -78,21 +105,35 @@
     </section><!-- End Call To Action Section -->
 
     <!-- ======= Our Services Section ======= -->
-    <section id="layanan_kami" class="services">
+    <section
+      id="layanan_kami"
+      class="services"
+    >
       <LayananKami />
     </section><!-- End Our Services Section -->
 
     <!-- ======= About Us Section ======= -->
-    <section id="berita" class="berita">
-      <div class="container" data-aos="fade-up">
+    <section
+      id="berita"
+      class="berita"
+    >
+      <div
+        class="container"
+        data-aos="fade-up"
+      >
         <Berita />
       </div>
     </section><!-- End About Us Section -->
 
-
     <!-- ======= Frequently Asked Questions Section ======= -->
-    <section id="faq" class="faq">
-      <div class="container" data-aos="fade-up">
+    <section
+      id="faq"
+      class="faq"
+    >
+      <div
+        class="container"
+        data-aos="fade-up"
+      >
         <div class="row gy-4">
           <div class="col-lg-4">
             <div class="content px-xl-5">
@@ -104,17 +145,30 @@
             </div>
           </div>
           <div class="col-lg-8">
-            <div class="accordion accordion-flush" id="faqlist" data-aos="fade-up" data-aos-delay="100">
+            <div
+              class="accordion accordion-flush"
+              id="faqlist"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
 
               <div class="accordion-item">
                 <h3 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#faq-content-1">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#faq-content-1"
+                  >
                     <span class="num">1.</span>
                     Non consectetur a erat nam at lectus urna duis?
                   </button>
                 </h3>
-                <div id="faq-content-1" class="accordion-collapse collapse" data-bs-parent="#faqlist">
+                <div
+                  id="faq-content-1"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#faqlist"
+                >
                   <div class="accordion-body">
                     Feugiat pretium nibh ipsum consequat. Tempus iaculis urna id volutpat lacus laoreet non curabitur
                     gravida. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non.
@@ -124,13 +178,21 @@
 
               <div class="accordion-item">
                 <h3 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#faq-content-2">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#faq-content-2"
+                  >
                     <span class="num">2.</span>
                     Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque?
                   </button>
                 </h3>
-                <div id="faq-content-2" class="accordion-collapse collapse" data-bs-parent="#faqlist">
+                <div
+                  id="faq-content-2"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#faqlist"
+                >
                   <div class="accordion-body">
                     Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id
                     donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque
@@ -141,13 +203,21 @@
 
               <div class="accordion-item">
                 <h3 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#faq-content-3">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#faq-content-3"
+                  >
                     <span class="num">3.</span>
                     Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi?
                   </button>
                 </h3>
-                <div id="faq-content-3" class="accordion-collapse collapse" data-bs-parent="#faqlist">
+                <div
+                  id="faq-content-3"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#faqlist"
+                >
                   <div class="accordion-body">
                     Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Faucibus pulvinar
                     elementum integer enim. Sem nulla pharetra diam sit amet nisl suscipit. Rutrum tellus pellentesque
@@ -159,13 +229,21 @@
 
               <div class="accordion-item">
                 <h3 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#faq-content-4">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#faq-content-4"
+                  >
                     <span class="num">4.</span>
                     Ac odio tempor orci dapibus. Aliquam eleifend mi in nulla?
                   </button>
                 </h3>
-                <div id="faq-content-4" class="accordion-collapse collapse" data-bs-parent="#faqlist">
+                <div
+                  id="faq-content-4"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#faqlist"
+                >
                   <div class="accordion-body">
                     Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id
                     donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque
@@ -176,13 +254,21 @@
 
               <div class="accordion-item">
                 <h3 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#faq-content-5">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#faq-content-5"
+                  >
                     <span class="num">5.</span>
                     Tempus quam pellentesque nec nam aliquam sem et tortor consequat?
                   </button>
                 </h3>
-                <div id="faq-content-5" class="accordion-collapse collapse" data-bs-parent="#faqlist">
+                <div
+                  id="faq-content-5"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#faqlist"
+                >
                   <div class="accordion-body">
                     Molestie a iaculis at erat pellentesque adipiscing commodo. Dignissim suspendisse in est ante in.
                     Nunc vel risus commodo viverra maecenas accumsan. Sit amet nisl suscipit adipiscing bibendum est.
@@ -199,8 +285,14 @@
     </section><!-- End Frequently Asked Questions Section -->
 
     <!-- ======= Contact Section ======= -->
-    <section id="contact" class="contact">
-      <div class="container" data-aos="fade-up">
+    <section
+      id="contact"
+      class="contact"
+    >
+      <div
+        class="container"
+        data-aos="fade-up"
+      >
         <div class="section-header">
           <h2>Pengaduan</h2>
           <p>Nulla dolorum nulla nesciunt rerum facere sed ut inventore quam porro nihil id ratione ea sunt quis dolorem
@@ -247,21 +339,52 @@
           </div>
 
           <div class="col-lg-8">
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+            <form
+              action="forms/contact.php"
+              method="post"
+              role="form"
+              class="php-email-form"
+            >
               <div class="row">
                 <div class="col-md-6 form-group">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Nama Anda" required>
+                  <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    id="name"
+                    placeholder="Nama Anda"
+                    required
+                  >
                 </div>
                 <div class="col-md-6 form-group mt-3 mt-md-0">
-                  <input type="email" class="form-control" name="email" id="email" placeholder="Email Anda" required>
+                  <input
+                    type="email"
+                    class="form-control"
+                    name="email"
+                    id="email"
+                    placeholder="Email Anda"
+                    required
+                  >
                 </div>
               </div>
               <div class="form-group mt-3">
-                <input type="text" class="form-control" name="subject" id="subject" placeholder="Judul" required>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="subject"
+                  id="subject"
+                  placeholder="Judul"
+                  required
+                >
               </div>
               <div class="form-group mt-3">
-                <textarea class="form-control" name="message" rows="7" placeholder="Deskripsi Pengaduan"
-                  required></textarea>
+                <textarea
+                  class="form-control"
+                  name="message"
+                  rows="7"
+                  placeholder="Deskripsi Pengaduan"
+                  required
+                ></textarea>
               </div>
               <div class="my-3">
                 <div class="loading">Loading</div>
@@ -279,28 +402,33 @@
   </main><!-- End #main -->
 </template>
 <script>
-import TemukanDokter from '@/views/home/TemukanDokter.vue'
-import Berita from '@/views/home/Berita.vue'
-import LayananKami from '@/views/home/LayananKami.vue'
-import ClientKami from '@/views/home/ClientKami.vue'
-import SpesialisKami from '@/views/home/SpesialisKami.vue'
+import TemukanDokter from "@/views/home/TemukanDokter.vue";
+import Berita from "@/views/home/Berita.vue";
+import LayananKami from "@/views/home/LayananKami.vue";
+import ClientKami from "@/views/home/ClientKami.vue";
+import SpesialisKami from "@/views/home/SpesialisKami.vue";
 
-import { Carousel, Navigation, Pagination, Slide } from 'vue3-carousel'
-import cItem from '@/assets/img/bg-1.jpg'
+import { Carousel, Navigation, Pagination, Slide } from "vue3-carousel";
+import cItem from "@/assets/img/bg-1.jpg";
 
 export default {
   components: {
     Carousel,
     Slide,
     Pagination,
-    Navigation, SpesialisKami, ClientKami, LayananKami, Berita, TemukanDokter
+    Navigation,
+    SpesialisKami,
+    ClientKami,
+    LayananKami,
+    Berita,
+    TemukanDokter,
   },
   data() {
     return {
       cItem,
-    }
+    };
   },
-}
+};
 </script>
 
 <style>

@@ -27,6 +27,7 @@ class StoreLeafletRequest extends FormRequest
             "judul" => ["required"],
             "desc" => ["required"],
             "unit" => ["required"],
+            "filepond" => ["required", "mimes:pdf"],
         ];
     }
 }

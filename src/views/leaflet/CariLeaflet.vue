@@ -28,7 +28,7 @@
               </v-select>
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-6">
             <div class="mb-2">
               <v-select
                 v-model="unit"
@@ -42,7 +42,7 @@
               </v-select>
             </div>
           </div>
-          <div class="col-lg-2">
+          <!-- <div class="col-lg-2">
             <div class="mb-2">
               <button
                 type="button"
@@ -50,11 +50,10 @@
                 @click="onReset"
               >
                 Reset
-                <!-- <i class="bi bi-search"></i> -->
                 <i class="bi bi-arrow-counterclockwise"></i>
               </button>
             </div>
-          </div>
+          </div> -->
         </div>
       </form>
     </div>
@@ -78,6 +77,21 @@ export default {
   created() {
     this.getUnits();
   },
+  watch: {
+    unit(newVal) {
+      if (newVal != "") {
+        this.leaflet = "";
+      }
+    },
+    leaflet(newVal) {
+      if (newVal != "") {
+        this.unit = "";
+      }
+    },
+  },
+  computed: {
+    ...mapState(useLeafletStore, ["data"]),
+  },
   methods: {
     ...mapActions(useLeafletStore, ["setLeaflet", "setSpinner"]),
     onReset() {
@@ -94,7 +108,6 @@ export default {
             this.$Progress.finish();
           })
           .catch((err) => {
-            console.log(err);
             alert("Gagal Loading");
             this.$Progress.fail();
           });
@@ -106,11 +119,9 @@ export default {
         .get(`fr-leaflet/units`)
         .then((resp) => {
           this.units = resp.data.data;
-          console.log(this.units);
           this.$Progress.finish();
         })
         .catch((err) => {
-          console.log(err);
           alert("Gagal Loading");
           this.$Progress.fail();
         });
@@ -118,10 +129,17 @@ export default {
     async onSelected(val) {
       this.$Progress.start();
       this.setSpinner(true);
+      let page = 1;
+      this.data.url = `fr-leaflet/show-leaflet/${val.id}?page=${page}`;
+
       await http
-        .get(`fr-leaflet/show-leaflet/${val.id}`)
+        .get(this.data.url)
         .then((resp) => {
-          this.setLeaflet(resp.data.data);
+          this.data.currentPage = resp.data.data.current_page;
+          this.data.ttlItem = resp.data.data.total;
+          this.data.itemsPerPage = resp.data.data.per_page;
+          this.data.maxPageShow = resp.data.data.per_page;
+          this.setLeaflet(resp.data.data.data);
           this.$Progress.finish();
         })
         .catch((err) => {
@@ -136,10 +154,17 @@ export default {
       this.$Progress.start();
       console.log(val.unit);
       this.setSpinner(true);
+      let page = 1;
+      this.data.url = `fr-leaflet/show-leaflet-by-unit/${val.unit}?page=${page}`;
+
       await http
-        .get(`fr-leaflet/show-leaflet-by-unit/${val.unit}`)
+        .get(this.data.url)
         .then((resp) => {
-          this.setLeaflet(resp.data.data);
+          this.data.currentPage = resp.data.data.current_page;
+          this.data.ttlItem = resp.data.data.total;
+          this.data.itemsPerPage = resp.data.data.per_page;
+          this.data.maxPageShow = resp.data.data.per_page;
+          this.setLeaflet(resp.data.data.data);
           this.$Progress.finish();
         })
         .catch((err) => {

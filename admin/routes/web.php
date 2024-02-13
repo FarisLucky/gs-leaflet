@@ -21,4 +21,5 @@ Route::get('/', function () {
 Route::resource('leaflet', LeafletController::class)->except('edit')->names('leaflets');
 Route::post('/leaflet/upload-file/{id?}', [LeafletController::class, 'uploadFile'])->name('leaflet.upload_file');
 Route::get('/leaflet/file/{name}', [LeafletController::class, 'getFile'])->name('leaflet.file.data');
-Route::get('/leaflet/showFile/{id}', [LeafletController::class, 'showFile'])->name('leaflet.showFile');
+Route::get('/leaflet/showFile/{leaflet_id}', [LeafletController::class, 'showFile'])->name('leaflet.showFile');
+Route::get('/leaflet/download/{leaflet_id}', [\App\Http\Controllers\Frontend\LeafletController::class, 'download']);
