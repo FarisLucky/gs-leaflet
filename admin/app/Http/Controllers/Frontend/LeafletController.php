@@ -16,8 +16,7 @@ class LeafletController extends Controller
     {
         try {
 
-            $leaflets = MLeaflet::with('mFile')->paginate(16);
-            // $leaflets = MLeaflet::latest()->get();
+            $leaflets = MLeaflet::with('mFile')->paginate(10);
 
             return response()->json([
                 'code' => Response::HTTP_OK,
@@ -39,7 +38,9 @@ class LeafletController extends Controller
 
         try {
 
-            $files = MFile::where('leaflet_id', $id)->get();
+            $files = MFile::where(function ($query) use ($id) {
+                $query->where('leaflet_id', $id)->where('jenis', MFile::VIEW);
+            })->get();
 
             return response()->json([
                 'code' => Response::HTTP_OK,
@@ -147,9 +148,14 @@ class LeafletController extends Controller
     public function download($leaflet_id)
     {
         try {
-            $leaflet = MLeaflet::with('mFile')->findOrFail($leaflet_id);
+            $leaflet = MLeaflet::with([
+                'mFile' => function ($query) {
+                    $query->where('jenis', MFile::DOWNLOAD);
+                }
+            ])
+                ->findOrFail($leaflet_id);
 
-            $file = Storage::path($leaflet->mFile->fullUrl);
+            $file = Storage::path($leaflet->mFile[0]->fullUrl);
 
             return response()->download($file, $leaflet->judul . '.' . '.pdf');
         } catch (\Throwable $th) {
@@ -161,4 +167,5 @@ class LeafletController extends Controller
         }
 
     }
+
 }

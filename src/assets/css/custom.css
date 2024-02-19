@@ -402,21 +402,31 @@ section {
 }
 
 .card-title {
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: 700;
     letter-spacing: normal;
     margin-top: 5px;
     line-height: normal;
-    color: #495057;
+    color: #767b81;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-left: 5px solid #7d7d7d;
+    border-radius: 4px;
+    padding-left: 5px;
 }
 
 .card-subtitle {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
-    letter-spacing: normal;
-    line-height: 22px;
-    text-align: justify;
-    text-indent: 10px;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 6rem;
+    padding: 0 .5rem;
+}
+
+.card-body-cs {
+    padding: .5rem;
 }
 
 .img-item {

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed" dir="ltr" data-theme="theme-default"
-    data-assets-path="../../assets/" data-template="vertical-menu-template">
+<html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed" dir="ltr" data-theme="theme-default">
 
 <head>
     <meta charset="utf-8" />
@@ -14,7 +13,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('/assets/img/favicon/favicon.ico') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('/leaflet.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,7 +43,6 @@
     <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
     {{-- <script src="{{ asset('/dist/js/template-customizer.js') }}"></script> --}}
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="{{ asset('/assets/js/config.js') }}"></script>
 </head>
 
 <body>
@@ -100,9 +98,6 @@
 
     <script src="{{ asset('/dist/js/menu.js') }}"></script>
     <!-- endbuild -->
-
-    <!-- Main JS -->
-    <script src="{{ asset('/assets/js/main.js') }}"></script>
 
     <!-- LOADING BAR JS -->
     <script src="{{ asset('/dist/libs/ldbar/loading-bar.js') }}"></script>

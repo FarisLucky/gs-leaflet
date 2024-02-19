@@ -5,7 +5,7 @@
     class="footer"
   >
 
-    <div class="container">
+    <div class="container mb-4">
       <div class="row gy-4">
         <div class="col-lg-5 col-md-12 footer-info">
           <a
@@ -15,18 +15,12 @@
             <span>RS GRAHA SEHAT</span>
           </a>
           <p>Alamat: Jl. Raya Panglima Sudirman No.02, Sumber Armi, Sumberlele, Kec. Kraksaan, Kabupaten Probolinggo, Jawa Timur 67282</p>
-          <div class="social-links d-flex mt-4">
-            <a
-              href="https://www.instagram.com/rs.grahasehat"
-              class="instagram"
-            ><i class="bi bi-instagram"></i></a>
-          </div>
         </div>
 
       </div>
     </div>
 
-    <div class="container mt-4">
+    <div class="container mt-5">
       <div class="copyright">
         &copy; Copyright <strong><span>IT RSGS</span></strong>. Develop By <a href="https://www.instagram.com/faris_xy07/">Salman</a>
       </div>

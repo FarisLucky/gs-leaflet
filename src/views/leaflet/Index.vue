@@ -1,31 +1,3 @@
-<style scoped>
-.list-leaflet {
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
-  border: none;
-  padding: 0.4rem 0.3rem;
-}
-
-.list-leaflet span {
-  font-size: 20px;
-  font-weight: 600;
-}
-
-.card-body-cs {
-  height: 13rem;
-}
-
-.card-title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: 2.7rem;
-}
-
-.card-subtitle {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: 5.7rem;
-}
-</style>
 <template>
   <!-- ======= Hero Section ======= -->
   <section
@@ -100,30 +72,24 @@ export default {
 };
 </script>
 
-<style>
-.carousel {
-  text-align: left;
-}
-
-.carousel__item {
-  min-height: 200px;
+<style scoped>
+.action-bar {
   width: 100%;
-  background-color: var(--vc-clr-primary);
-  color: var(--vc-clr-white);
-  font-size: 20px;
-  border-radius: 8px;
+  height: 20px;
+  padding: 20px 0 30px 0;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.carousel__slide {
-  padding: 0px;
+.list-leaflet {
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  border: none;
+  padding: 0.4rem 0.3rem;
 }
 
-.carousel__prev,
-.carousel__next {
-  box-sizing: content-box;
-  border: 5px solid white;
+.list-leaflet span {
+  font-size: 20px;
+  font-weight: 600;
 }
 </style>

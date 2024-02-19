@@ -4,15 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class MFile extends Model
 {
+    const VIEW = 'VIEW';
+    const DOWNLOAD = 'DOWNLOAD';
     protected $table = 'm_file';
     protected $primaryKey = 'id';
     protected $fillable = [
         'leaflet_id',
         'name',
+        'jenis',
         'ext',
         'path',
         'url',
@@ -43,7 +47,21 @@ class MFile extends Model
 
     public function getUrlFileAttribute()
     {
-        return url($this->url);
+        return Storage::disk('public')->url($this->path . '/' . $this->name . '.' . $this->ext);
+    }
+
+    public function getUrlFileJenisAttribute()
+    {
+        if ($this->jenis === 'DOWNLOAD') {
+            return url($this->url);
+        }
+
+        return false;
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return !is_null($value) ? Carbon::make($value)->format('Y-m-d H:i') : $value;
     }
 
     public function mLeaflet(): BelongsTo

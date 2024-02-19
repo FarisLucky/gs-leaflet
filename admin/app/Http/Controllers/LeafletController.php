@@ -10,13 +10,22 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use League\Flysystem\FileNotFoundException;
 use Ramsey\Uuid\Uuid;
 
 class LeafletController extends Controller
 {
     public function index()
     {
-        $leaflets = MLeaflet::all();
+        $leaflets = MLeaflet::with('mFile')->get();
+
+        $leaflets->transform(function ($val) {
+            $val->urlFileJenis = $val->mFile->filter(function ($value, $key) {
+                return $value->jenis === 'DOWNLOAD';
+            })->first();
+
+            return $val;
+        });
 
         return view("leaflet.index", compact('leaflets'));
     }
@@ -25,23 +34,7 @@ class LeafletController extends Controller
     public function store(StoreLeafletRequest $request)
     {
         try {
-
-            $file = $request->file('filepond');
-            $name = $request->judul . '_' . Uuid::uuid4();
-            $ext = $file->getClientOriginalExtension();
-            $path = 'leaflets';
-            $fullName = $name . '.' . $ext;
-
-            $file->storeAs($path, $fullName);
-
             $leaflet = MLeaflet::create($request->validated());
-
-            MFile::create([
-                'name' => $name,
-                'ext' => $ext,
-                'path' => $path,
-                'leaflet_id' => $leaflet->id,
-            ]);
 
             return redirect()->route('leaflets.index')->with(['success' => 'Tindakan Berhasil']);
         } catch (\Throwable $th) {
@@ -71,6 +64,9 @@ class LeafletController extends Controller
     public function uploadFile(Request $request, $id)
     {
         try {
+
+            $jenis = request('jenis');
+
             DB::beginTransaction();
 
             $data = MLeaflet::find($id);
@@ -78,12 +74,11 @@ class LeafletController extends Controller
             $file = $request->file('upload');
             $name = $data->judul . '_' . Uuid::uuid4();
             $ext = $file->getClientOriginalExtension();
-            $path = '/leaflets';
+            $path = 'leaflets';
             $fullName = $name . '.' . $ext;
 
             $files = Storage::disk('public')->putFileAs($path, $file, $fullName);
             $storageUrl = Storage::url($files);
-            // $file->storeAs(public_path($path), $fullName);
 
             $storeFile = MFile::create([
                 'name' => $name,
@@ -91,6 +86,7 @@ class LeafletController extends Controller
                 'path' => $path,
                 'leaflet_id' => $data->id,
                 'url' => $storageUrl,
+                'jenis' => $jenis,
             ]);
 
             DB::commit();
@@ -136,6 +132,71 @@ class LeafletController extends Controller
                 "Content-Type" => "application/pdf",
                 "Content-Disposition" => 'inline; filename="' . $mFile->judul . '"'
             ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'status' => 'FAIL',
+                'data' => $th->getMessage(),
+            ]);
+        }
+
+    }
+    public function pdfFile($id)
+    {
+        try {
+
+            $file = MFile::find($id);
+
+            $storage = Storage::disk('public');
+
+            if ($storage->missing($file->fullUrl)) {
+                throw new FileNotFoundException($file->fullUrl);
+            }
+
+            return response()->file(Storage::disk('public')->path($file->fullUrl), [
+                "Content-Disposition" => "filename='test.jpg'"
+            ]);
+
+        } catch (\Throwable $th) {
+
+            return response()->json([
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'status' => "FAIl",
+                'data' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function viewCover($leaflet_id)
+    {
+        try {
+            $leaflet = MLeaflet::with([
+                'mFile' => function ($query) {
+                    $query->where('jenis', MFile::VIEW);
+                }
+            ])->findOrFail($leaflet_id);
+
+            $file = Storage::disk('public')->path($leaflet->mFile[0]->fullUrl);
+
+            return response()->file($file);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'status' => 'FAIL',
+                'data' => $th->getMessage(),
+            ]);
+        }
+
+    }
+
+    public function viewLeaflet($id)
+    {
+        try {
+            $leaflet = MFile::findOrFail($id);
+
+            $file = Storage::disk('public')->path($leaflet->fullUrl);
+
+            return response()->file($file);
         } catch (\Throwable $th) {
             return response()->json([
                 'code' => Response::HTTP_INTERNAL_SERVER_ERROR,

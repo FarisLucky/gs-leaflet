@@ -1,4 +1,4 @@
-import { http } from "@/config/http"
+import { http, BASE_URL } from "@/config/http"
 
 class LeafletService {
 
@@ -35,6 +35,27 @@ class LeafletService {
             const { data } = await this.http.get(this.url + '/show-pdf/' + id, { responseType: 'blob' })
 
             return [null, data]
+        } catch (error) {
+            return [error]
+        }
+    }
+
+    async detailImage(id) {
+        try {
+
+            const { data } = await http.get(this.url + `/show/${id}`)
+
+            let pages = []
+
+            if (data.data.length < 1) {
+                throw new Error('Leaflet Gagal dimuat')
+            }
+
+            data.data.forEach((item) => {
+                pages.push(BASE_URL + 'leaflet/view-leaflet/' + item.id);
+            });
+
+            return [null, pages]
         } catch (error) {
             return [error]
         }

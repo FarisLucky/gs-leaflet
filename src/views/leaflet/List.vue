@@ -28,15 +28,6 @@
         <div class="col-md-12 text-center">
           <easy-spinner />
         </div>
-        <div class="col-md-12 text-center mt-2">
-          <vue-awesome-paginate
-            :total-items="data.ttlItem"
-            :items-per-page="data.itemsPerPage"
-            :max-pages-shown="data.maxPageShow"
-            v-model="data.currentPage"
-            :on-click="onClickHandler"
-          />
-        </div>
       </div>
       <div
         v-else
@@ -49,29 +40,29 @@
         >
           <div class="card mb-2">
             <div class="card-cs">
-              <img
+              <!-- <img
                 v-if="l.m_file.length > 1"
-                :src="l.m_file[0]?.urlFile"
+                :src="BASE_URL+'leaflet/view-cover/'+l.id"
                 class="card-img-top"
                 alt="Card image cap"
-              >
+              > -->
               <img
-                v-else
                 class="card-img-top"
-                :src="img"
+                v-lazy="img"
                 alt="Card image cap"
               >
             </div>
             <div class="card-body card-body-cs">
               <div class="card-title">
-                {{ l.judul }}
+                <strong>{{ l.judul }}</strong>
               </div>
+              <hr class="py-0">
               <div class="card-subtitle">
-                {{ l.desc }}
+                <p>{{ l.desc }}</p>
               </div>
               <div class="d-flex justiy-content-between my-1">
                 <router-link
-                  :to="{ name: 'LeafletDetail', params: { id: l.id, nama: l.nama} }"
+                  :to="{ name: 'LeafletDetail', params: { id: l.id, nama: l.judul} }"
                   type="button"
                   class="btn btn-primary btn-view"
                 >
@@ -90,11 +81,20 @@
           </div>
         </div>
       </div>
+      <div class="col-md-12 text-center mt-2">
+        <vue-awesome-paginate
+          :total-items="data.ttlItem"
+          :items-per-page="data.itemsPerPage"
+          :max-pages-shown="data.maxPageShow"
+          v-model="data.currentPage"
+          :on-click="onClickHandler"
+        />
+      </div>
     </div>
   </section>
 </template>
 <script>
-import img from "@/assets/img/portfolio/app-1.jpg";
+import img from "@/assets/img/init-cvr.png";
 import { http } from "@/config/http";
 import { useLeafletStore } from "@/stores/leaflets";
 import { mapState, mapActions } from "pinia";
@@ -105,6 +105,7 @@ export default {
   data() {
     return {
       img,
+      BASE_URL,
       leaflets: [],
     };
   },
@@ -204,14 +205,9 @@ export default {
   max-height: 205px;
   position: relative;
 }
-/* .card-cs::before {
-  content: "";
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #2988c8;
-} */
+.card-subtitle p {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(114, 114, 114);
+}
 </style>

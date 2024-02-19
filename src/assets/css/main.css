@@ -73,9 +73,10 @@ h6 {
 input,
 select,
 textarea {
-  font-size: 13px !important;
+  font-size: 14px !important;
   letter-spacing: .2px;
   color: var(--color-dark) !important;
+  font-weight: 700;
 }
 
 /*--------------------------------------------------------------
@@ -2617,9 +2618,10 @@ section {
 .footer {
   font-size: 14px;
   /* background-color: var(--color-primary); */
-  background-color: #3E6184;
+  /* background-color: #3E6184; */
+  background-color: rgb(234, 236, 239);
   padding: 50px 0;
-  color: white;
+  color: #3E6184;
 }
 
 .footer .footer-info .logo {
@@ -2636,7 +2638,7 @@ section {
   font-size: 30px;
   font-weight: 700;
   letter-spacing: 1px;
-  color: #fff;
+  color: #3E6184;
   font-family: var(--font-primary);
 }
 

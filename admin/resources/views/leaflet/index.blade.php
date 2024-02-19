@@ -39,6 +39,8 @@
                                         <th>Judul</th>
                                         <th>Deskripsi</th>
                                         <th>Unit</th>
+                                        <th>PDF</th>
+                                        <th>IMG</th>
                                         <th style="width: 8%">Aksi</th>
                                     </thead>
                                     <tbody>
@@ -50,6 +52,29 @@
                                                 <td>{{ $item->desc }}</td>
                                                 <td>{{ $item->unit }}</td>
                                                 <td>
+                                                    {{-- {{ dd($item) }} --}}
+                                                    @if (\Illuminate\Support\Facades\Storage::disk('public')->exists(optional($item->urlFileJenis)->fullUrl))
+                                                        <a href="{{ route('pdf_file', ['id' => $item->urlFileJenis->id]) }}"
+                                                            target="_blank" class="link-primary">
+                                                            Lihat
+                                                        </a>
+                                                    @else
+                                                        <a href="{{ route('leaflet.showFile', ['id' => $item->id]) }}"
+                                                            class="link-primary upload-pdf"
+                                                            data-url="{{ route('leaflet.upload_file', ['id' => $item->id, 'jenis' => 'DOWNLOAD']) }}">
+                                                            <i class="ti ti-pencil mb-1"></i>
+                                                        </a>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('leaflet.showFile', ['id' => $item->id, 'jenis' => 'VIEW']) }}"
+                                                        class="link-success upload"
+                                                        data-url-update="{{ route('leaflet.upload_file', ['id' => $item->id, 'jenis' => 'VIEW']) }}"
+                                                        data-datatable="{{ route('api.leaflet.data_file', ['idLeaflet' => $item->id]) }}">
+                                                        <i class="ti ti-file-upload mb-1"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
                                                     <div class="mb-1">
                                                         <a href="{{ route('leaflets.update', $item->id) }}"
                                                             class="link-info edit">
@@ -58,10 +83,6 @@
                                                         <a href="{{ route('api.leaflet.destroy', ['id' => $item->id]) }}"
                                                             class="link-danger hapus">
                                                             <i class="ti ti-trash mb-1"></i>
-                                                        </a>
-                                                        <a href="{{ route('leaflet.showFile', ['leaflet_id' => $item->id]) }}"
-                                                            class="link-success" target="_blank">
-                                                            <i class="ti ti-file-upload mb-1"></i>
                                                         </a>
                                                     </div>
                                                 </td>
@@ -76,9 +97,17 @@
             </div>
         </div>
     </div>
+    @include('leaflet.upload_img')
+    @include('leaflet.upload_pdf')
 @endsection
 @prepend('javascript')
     <script src="{{ asset('dist/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
+    <script src="{{ asset('dist/libs/filepond/filepond.min.js') }}"></script>
+    <script src="{{ asset('dist/libs/filepond/filepond-plugin-file-validate-type.js') }}"></script>
+    <script src="{{ asset('dist/libs/filepond/filepond-plugin-file-validate-size.min.js') }}"></script>
+    <script src="{{ asset('dist/libs/filepond/filepond-plugin-image-preview.js') }}"></script>
+@endprepend
+@push('javascript')
     <script>
         $(function() {
             table = $('#leaflet').DataTable({
@@ -86,6 +115,10 @@
                     [1, 'desc']
                 ]
             })
+
+            filepondVar = filepondInit()
+            filepondPDF = filepondInitPDF()
+
         });
 
         $('#leaflet tbody').on('click', '.edit', function(e) {
@@ -118,5 +151,31 @@
                 });
             }
         });
+
+        $('#leaflet tbody').on('click', '.upload', function(e) {
+            e.preventDefault();
+
+            const urlData = $(this).attr('href')
+            const urlUpdate = $(this).attr('data-url-update')
+            const urlDatatable = $(this).attr('data-datatable')
+            let urls = $('#urlDatatable').attr('data-datatable', urlDatatable)
+
+            $('#formUpload').attr('action', urlUpdate)
+
+            filepondVar.files = null;
+
+            filepondIMGOptions(urlUpdate)
+
+            modal.show()
+        });
+        $('#leaflet tbody').on('click', '.upload-pdf', function(e) {
+            e.preventDefault();
+
+            let url = $(this).attr('data-url')
+
+            filepondPDFOptions(url)
+
+            modalPDF.show()
+        });
     </script>
-@endprepend
+@endpush

@@ -1,5 +1,5 @@
 .cs-vselect {
-    font-size: 12px !important;
+    font-size: 14px !important;
     font-weight: 600;
 }
 
@@ -7,16 +7,6 @@
     border-width: 2px;
     padding: .4rem 0;
     border-color: var(--color-primary) !important;
-}
-
-.multiselect,
-.multiselect__input,
-.multiselect__single {
-    font-size: 12px !important;
-}
-
-.multiselect__placeholder {
-    font-size: 13px !important;
 }
 
 .section-reset {
