@@ -36,24 +36,11 @@
                 label="unit"
                 placeholder="Unit"
                 class="cs-vselect"
-                :reduce="unit => unit.unit"
                 @option:selected="onSelectedUnit"
               >
               </v-select>
             </div>
           </div>
-          <!-- <div class="col-lg-2">
-            <div class="mb-2">
-              <button
-                type="button"
-                class="btn w-100 btn-search-dokter bg-secondary"
-                @click="onReset"
-              >
-                Reset
-                <i class="bi bi-arrow-counterclockwise"></i>
-              </button>
-            </div>
-          </div> -->
         </div>
       </form>
     </div>

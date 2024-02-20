@@ -43,11 +43,45 @@
     <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
     {{-- <script src="{{ asset('/dist/js/template-customizer.js') }}"></script> --}}
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <style>
+        .loader {
+            position: fixed;
+            top: 50%;
+            right: 50%;
+            z-index: 9999;
+        }
+
+        .loader.hide {
+            display: none;
+        }
+
+        .loader.show {
+            display: inline-block;
+        }
+
+        .loader-wrapper {
+            padding: .2rem;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #bcbcbc6b
+        }
+
+        .loader-wrapper::after {
+            content: 'loading';
+            margin-left: .3rem;
+            font-size: 12px;
+        }
+    </style>
 </head>
 
 <body>
     {{-- <div class="ldBar" style="height: 10px; width: 100%" data-preset="line" data-value="50" data-fill-dir="ltr"></div> --}}
     <!-- Layout wrapper -->
+    <div class="loader">
+        <div class="loader-wrapper">
+            <img src="{{ asset('loader2.gif') }}" style="width: 40px">
+        </div>
+    </div>
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <!-- Menu -->
@@ -101,8 +135,20 @@
 
     <!-- LOADING BAR JS -->
     <script src="{{ asset('/dist/libs/ldbar/loading-bar.js') }}"></script>
-    @stack('javascript')
+    <script>
+        var loader = document.querySelector('.loader')
 
+        function hideLoader() {
+            loader.classList.remove('show')
+            loader.classList.add('hide')
+        }
+
+        function showLoader() {
+            loader.classList.remove('hide')
+            loader.classList.add('show')
+        }
+    </script>
+    @stack('javascript')
 </body>
 
 </html>

@@ -123,7 +123,8 @@ export default {
     async getLeaflet(page = 1) {
       this.$Progress.start();
       this.setSpinner(true);
-      this.data.url = "fr-leaflet/list?page=" + page;
+      this.data.page = page;
+      this.data.url = "fr-leaflet/list?page=" + this.data.page;
       await http
         .get(this.data.url)
         .then((resp) => {
@@ -147,7 +148,6 @@ export default {
 
     onClickHandler(page) {
       this.getLeaflet(page);
-      console.log(page);
     },
 
     onRefresh() {

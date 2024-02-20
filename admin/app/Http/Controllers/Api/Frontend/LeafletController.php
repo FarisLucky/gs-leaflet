@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\SearchLeafletSelectResource;
 use App\Models\MFile;
 use App\Models\MLeaflet;
+use App\Models\MUnit;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 
@@ -128,7 +129,7 @@ class LeafletController extends Controller
 
         try {
 
-            $units = MLeaflet::select('unit')->groupBy('unit')->get();
+            $units = MUnit::all(['nama']);
 
             return response()->json([
                 'code' => Response::HTTP_OK,

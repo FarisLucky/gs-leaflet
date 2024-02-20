@@ -133,7 +133,9 @@ export default {
       const [err, leaflets] = await leafletService.detailImage(id);
 
       if (err) {
-        alert(err);
+        alert("LEAFLET GAGAL DIMUAT");
+        this.$router.back();
+        return;
       }
 
       this.pages = leaflets;

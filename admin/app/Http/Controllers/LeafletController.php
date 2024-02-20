@@ -6,6 +6,7 @@ use App\Http\Requests\StoreLeafletRequest;
 use App\Http\Requests\UpdateLeafletRequest;
 use App\Models\MFile;
 use App\Models\MLeaflet;
+use App\Models\MUnit;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +28,9 @@ class LeafletController extends Controller
             return $val;
         });
 
-        return view("leaflet.index", compact('leaflets'));
+        $units = MUnit::all(['nama']);
+
+        return view("leaflet.index", compact('leaflets', 'units'));
     }
 
 

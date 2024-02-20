@@ -113,7 +113,10 @@
             table = $('#leaflet').DataTable({
                 order: [
                     [1, 'desc']
-                ]
+                ],
+                "fnInitComplete": function() {
+                    hideLoader()
+                }
             })
 
             filepondVar = filepondInit()

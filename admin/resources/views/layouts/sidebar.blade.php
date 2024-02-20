@@ -31,6 +31,11 @@
                 <i class="menu-icon tf-icons ti ti-color-swatch"></i>
                 <div data-i18n="Email">Leaflet</div>
             </a>
+            <a href="{{ route('m_unit.index') }}"
+                class="menu-link {{ request()->route()->getName() === 'm_unit.index' ? 'active' : '' }}">
+                <i class="menu-icon tf-icons ti ti-color-swatch"></i>
+                <div data-i18n="Email">Unit</div>
+            </a>
         </li>
     </ul>
 </aside>

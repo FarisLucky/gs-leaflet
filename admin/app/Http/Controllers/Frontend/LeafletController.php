@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\SearchLeafletSelectResource;
 use App\Models\MFile;
 use App\Models\MLeaflet;
+use App\Models\MUnit;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +18,7 @@ class LeafletController extends Controller
     {
         try {
 
-            $leaflets = MLeaflet::with('mFile')->paginate(10);
+            $leaflets = MLeaflet::with('mFile')->paginate(8);
 
             return response()->json([
                 'code' => Response::HTTP_OK,
@@ -29,7 +31,7 @@ class LeafletController extends Controller
                 'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'status' => 'OK',
                 'data' => $th->getMessage(),
-            ]);
+            ], $th->getCode());
         }
     }
 
@@ -42,6 +44,10 @@ class LeafletController extends Controller
                 $query->where('leaflet_id', $id)->where('jenis', MFile::VIEW);
             })->get();
 
+            if ($files->isEmpty()) {
+                throw new ModelNotFoundException('LEAFLET BELUM TERSEDIA');
+            }
+
             return response()->json([
                 'code' => Response::HTTP_OK,
                 'status' => 'OK',
@@ -50,10 +56,10 @@ class LeafletController extends Controller
         } catch (\Throwable $th) {
 
             return response()->json([
-                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'status' => 'OK',
-                'data' => $th->getMessage(),
-            ]);
+                'code' => $th->getCode(),
+                'status' => $th->getMessage(),
+                'data' => [],
+            ], 500);
         }
     }
 
@@ -128,7 +134,7 @@ class LeafletController extends Controller
 
         try {
 
-            $units = MLeaflet::select('unit')->groupBy('unit')->get();
+            $units = MUnit::pluck('nama');
 
             return response()->json([
                 'code' => Response::HTTP_OK,

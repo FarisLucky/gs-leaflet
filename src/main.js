@@ -37,9 +37,6 @@ const options = {
     inverse: false,
 };
 
-// const loadimage = require('@/assets/img/img-loader.gif')
-// const errorimage = require('@/assets/img/img-error.gif')
-
 const app = createApp(App)
 
 app.use(createPinia())

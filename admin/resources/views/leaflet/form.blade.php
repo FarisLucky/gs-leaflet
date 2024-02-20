@@ -23,13 +23,10 @@
                 </div>
                 <div class="col-md-3 mb-1">
                     <label class="form-label" for="unit">Unit</label>
-                    @php
-                        $units = ['R.MATERNAL', 'R.NEO', 'R.GENERAL', 'R.ANAK', 'GIZI'];
-                    @endphp
                     <select name="unit" id="unit" class="form-select">
                         <option value="">-- Pilih Unit --</option>
                         @foreach ($units as $unit)
-                            <option value="{{ $unit }}">{{ $unit }}</option>
+                            <option value="{{ $unit->nama }}">{{ $unit->nama }}</option>
                         @endforeach
                     </select>
                     @error('unit')
