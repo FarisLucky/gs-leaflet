@@ -10,7 +10,7 @@ Route::prefix("fr-leaflet")->name("fr.leaflet")->group(function () {
         ->name("show_leaflet");
     Route::get("/show-leaflet-by-unit/{unit}", [LeafletController::class, "showLeafletByUnit"])
         ->name("show_leaflet_by_unit");
-    Route::get("/search/{name}", [LeafletController::class, "search"])
+    Route::get("/search", [LeafletController::class, "search"])
         ->name("search");
     // Route::get("/show-pdf/{leaflet_id}", [\App\Http\Controllers\LeafletController::class, "showFile"])
     //     ->name("search");

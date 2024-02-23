@@ -4,35 +4,28 @@
       <div class="mb-1">
         <h4
           class="py-2 border-bottom"
-          style="display: inline-block; width: 95%;"
-        >Leaflet: </h4>
-        <button
-          class="btn btn-sm btn-outline-secondary"
-          @click="onRefresh"
+          style="display: inline-block; width: 95%"
         >
+          Leaflet:
+        </h4>
+        <button class="btn btn-sm btn-outline-secondary" @click="onRefresh">
           <i class="bi bi-arrow-counterclockwise"></i>
         </button>
       </div>
-      <div
-        v-if="data.leaflets.length < 1"
-        class="row"
-      >
-        <div class="col-md-12 text-end mb-2 bg-reload">
-          <button
-            class="btn btn-sm btn-outline-secondary"
-            @click="onRefresh"
-          >
-            <i class="bi bi-arrow-counterclockwise"></i>
-          </button>
-        </div>
+      <div v-if="data.leaflets.length < 1" class="row">
         <div class="col-md-12 text-center">
-          <easy-spinner />
+          <div>
+            <img
+              :src="ImgNotFound"
+              alt="Leaflet Tidak ditemukan"
+              style="width: 250px; max-width: 400px"
+            />
+            <h4 class="text-danger mt-2">Leaflet Tidak ditemukan</h4>
+          </div>
+          <easy-spinner v-if="data.loading" />
         </div>
       </div>
-      <div
-        v-else
-        class="row"
-      >
+      <div v-else class="row">
         <div
           v-for="(l, idx) in data.leaflets"
           class="col-lg-3 col-md-4 col-6 bg-list"
@@ -40,29 +33,33 @@
         >
           <div class="card mb-2">
             <div class="card-cs">
-              <!-- <img
-                v-if="l.m_file.length > 1"
-                :src="BASE_URL+'leaflet/view-cover/'+l.id"
-                class="card-img-top"
-                alt="Card image cap"
-              > -->
               <img
+                v-if="l.m_cover !== null"
+                v-lazy="`${BASE_URL}leaflet/view-cover/${l.id}?order=0`"
+                class="card-img-top"
+                alt="Leaflet Cover"
+              />
+              <img
+                v-else
                 class="card-img-top"
                 v-lazy="img"
-                alt="Card image cap"
-              >
+                alt="Leaflet Cover"
+              />
             </div>
             <div class="card-body card-body-cs">
               <div class="card-title">
                 <strong>{{ l.judul }}</strong>
               </div>
-              <hr class="py-0">
+              <hr class="py-0" />
               <div class="card-subtitle">
                 <p>{{ l.desc }}</p>
               </div>
               <div class="d-flex justiy-content-between my-1">
                 <router-link
-                  :to="{ name: 'LeafletDetail', params: { id: l.id, nama: l.judul} }"
+                  :to="{
+                    name: 'LeafletDetail',
+                    params: { id: l.id, nama: l.judul },
+                  }"
                   type="button"
                   class="btn btn-primary btn-view"
                 >
@@ -80,15 +77,45 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-12 text-center mt-2">
-        <vue-awesome-paginate
-          :total-items="data.ttlItem"
-          :items-per-page="data.itemsPerPage"
-          :max-pages-shown="data.maxPageShow"
-          v-model="data.currentPage"
-          :on-click="onClickHandler"
-        />
+        <div class="col-md-12 text-center mt-2">
+          <div class="mb-1 paginate" style="overflow-x: scroll">
+            <vue-awesome-paginate
+              :total-items="data.ttlItem"
+              :items-per-page="data.itemsPerPage"
+              :max-pages-shown="data.maxPageShow"
+              v-model="data.currentPage"
+              :on-click="onClickHandler"
+            >
+              <template #prev-button>
+                <span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="#1abc9c"
+                    width="11"
+                    height="11"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M8.122 24l-4.122-4 8-8-8-8 4.122-4 11.878 12z" />
+                  </svg>
+                </span>
+              </template>
+
+              <template #next-button>
+                <span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="#1abc9c"
+                    width="11"
+                    height="11"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M8.122 24l-4.122-4 8-8-8-8 4.122-4 11.878 12z" />
+                  </svg>
+                </span>
+              </template>
+            </vue-awesome-paginate>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -99,6 +126,7 @@ import { http } from "@/config/http";
 import { useLeafletStore } from "@/stores/leaflets";
 import { mapState, mapActions } from "pinia";
 import { BASE_URL } from "@/config/http";
+import ImgNotFound from "@/assets/not_found.svg"
 
 export default {
   props: ["leafletsData"],
@@ -107,6 +135,7 @@ export default {
       img,
       BASE_URL,
       leaflets: [],
+      ImgNotFound
     };
   },
   created() {
@@ -133,7 +162,6 @@ export default {
           this.data.itemsPerPage = resp.data.data.per_page;
           this.data.maxPageShow = resp.data.data.per_page;
           this.setLeaflet(resp.data.data.data);
-          console.log(this.data.leaflets[0].m_file.length);
           this.$Progress.finish();
         })
         .catch((err) => {
@@ -159,7 +187,7 @@ export default {
 <style>
 .pagination-container {
   display: flex;
-  column-gap: 10px;
+  column-gap: 5px;
 }
 .paginate-buttons {
   height: 40px;
@@ -209,5 +237,70 @@ export default {
   font-size: 14px;
   font-weight: 600;
   color: rgb(114, 114, 114);
+}
+
+.paginate-buttons {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  background-color: #e6e6e6;
+  border: none;
+}
+
+.back-button,
+.next-button {
+  margin-inline: 10px;
+  border-radius: 25px;
+}
+
+.first-button {
+  border-start-start-radius: 25px;
+  border-end-start-radius: 25px;
+}
+.last-button {
+  border-start-end-radius: 25px;
+  border-end-end-radius: 25px;
+}
+
+.back-button svg {
+  transform: rotate(180deg) translateY(-2px);
+}
+.next-button svg {
+  transform: translateY(2px);
+}
+
+/* select second element of .paginate-buttons */
+li:nth-child(2) > .paginate-buttons.number-buttons {
+  border-start-start-radius: 25px;
+  border-end-start-radius: 25px;
+  transition: none;
+}
+
+/* select one element before last of .paginate-buttons */
+li:nth-last-child(2) > .paginate-buttons.number-buttons {
+  border-start-end-radius: 25px;
+  border-end-end-radius: 25px;
+}
+
+.active-page {
+  background-color: #2980b9;
+  color: #fff;
+}
+
+.active-page {
+  background-color: #2980b9;
+  color: #fff;
+}
+
+.paginate-buttons:hover {
+  background-color: #f5f5f5;
+}
+
+.active-page:hover {
+  background-color: #388ac1;
+}
+.back-button:active,
+.next-button:active {
+  background-color: #e6e6e6;
 }
 </style>

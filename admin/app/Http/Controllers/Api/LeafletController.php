@@ -37,7 +37,7 @@ class LeafletController extends Controller
             ->addColumn('aksi', function ($l) {
                 // $html = '<a href="#" class="btn btn-sm btn-outline-info edit-gDietPasien"><i class="fas fa-edit py-1"></i></a>';
                 $html = '
-                <a href="' . route('pdf_file', ['id' => $l->id]) . '" target="_blank"><i class="ti ti-eye mb-1 text-info"></i></a>
+                <a href="' . route('view_leaflet', ['id' => $l->id]) . '" target="_blank"><i class="ti ti-eye mb-1 text-info"></i></a>
                 <a href="' . url($l->url) . '" class="edit"><i class="ti ti-pencil mb-1"></i></a>
                 <a href="' . route("api.leaflet.destroy_order", ['id' => $l->id]) . '" class="hapus link-danger"><i class="ti ti-trash mb-1"></i></a>';
 

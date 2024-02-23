@@ -1,9 +1,6 @@
 <template>
   <!-- ======= Hero Section ======= -->
-  <section
-    id="hero"
-    class="hero"
-  >
+  <section id="hero" class="hero">
     <div class="container container-cs position-relative h-100">
       <div class="mb-1 mt-3 jumbotron row mx-0">
         <div class="col-lg-6 p-3 cover">
@@ -11,26 +8,19 @@
           <span class="subtitle">Kumpulan Leaflet RS Graha Sehat</span>
         </div>
         <div class="col-lg-6 cover-img">
-          <img
-            :src="img"
-            class="jumbotron-img"
-            style="max-width: 250px;"
-          >
+          <img :src="img" class="jumbotron-img" style="max-width: 250px" />
         </div>
       </div>
     </div>
   </section>
 
-  <section
-    id="search-leaflet"
-    style="overflow: visible;"
-  >
+  <section id="search-leaflet" style="overflow: visible">
     <div class="container container-cs">
       <CariLeaflet />
     </div>
   </section>
 
-  <section style="padding: 0;">
+  <section style="padding: 0">
     <div class="container container-cs">
       <router-view v-slot="{ Component }">
         <transition name="slide-fade">
@@ -46,17 +36,12 @@ import Detail from "./Detail.vue";
 import CariLeaflet from "@/views/leaflet/CariLeaflet.vue";
 import { useLeafletStore } from "@/stores/leaflets";
 
-import { Carousel, Navigation, Pagination, Slide } from "vue3-carousel";
 import cItem from "@/assets/img/bg-1.jpg";
 import { mapState } from "pinia";
 import img from "@/assets/img/book-material.png";
 
 export default {
   components: {
-    Carousel,
-    Slide,
-    Pagination,
-    Navigation,
     CariLeaflet,
     Detail,
   },

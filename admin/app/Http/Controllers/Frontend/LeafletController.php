@@ -18,12 +18,23 @@ class LeafletController extends Controller
     {
         try {
 
-            $leaflets = MLeaflet::with('mFile')->paginate(8);
+            $search = request('q');
+
+            $leaflets = MLeaflet::with([
+                'mFile',
+                'mCover' => function ($query) {
+                    $query->where('jenis', MFile::VIEW)->where('order', 0);
+                }
+            ]);
+
+            $leaflets->when(isset($search) && $search !== '', function($query) use ($search){
+                $query->search($search);
+            });
 
             return response()->json([
                 'code' => Response::HTTP_OK,
                 'status' => 'OK',
-                'data' => $leaflets,
+                'data' => $leaflets->paginate(8),
             ]);
         } catch (\Throwable $th) {
 
@@ -31,7 +42,7 @@ class LeafletController extends Controller
                 'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'status' => 'OK',
                 'data' => $th->getMessage(),
-            ], $th->getCode());
+            ], 500);
         }
     }
 
@@ -41,7 +52,9 @@ class LeafletController extends Controller
         try {
 
             $files = MFile::where(function ($query) use ($id) {
-                $query->where('leaflet_id', $id)->where('jenis', MFile::VIEW);
+                $query->where('leaflet_id', $id)
+                    ->where('jenis', MFile::VIEW)
+                    ->where('order', '<>', 0);
             })->get();
 
             if ($files->isEmpty()) {
@@ -68,7 +81,7 @@ class LeafletController extends Controller
 
         try {
 
-            $leaflet = MLeaflet::with('mFile')->where('id', $id)->paginate(16);
+            $leaflet = MLeaflet::with('mFile')->where('id', $id)->paginate(8);
 
             return response()->json([
                 'code' => Response::HTTP_OK,
@@ -90,7 +103,7 @@ class LeafletController extends Controller
 
         try {
 
-            $leaflet = MLeaflet::with('mFile')->where('unit', $unit)->paginate(16);
+            $leaflet = MLeaflet::with('mFile')->where('unit', $unit)->paginate(8);
 
             return response()->json([
                 'code' => Response::HTTP_OK,
@@ -107,12 +120,14 @@ class LeafletController extends Controller
         }
     }
 
-    public function search($name)
+    public function search()
     {
 
         try {
 
-            $leaflets = MLeaflet::with('mFile')->search($name)->paginate(16);
+            $search = request('q');
+
+            $leaflets = MLeaflet::with('mFile')->search($search)->paginate(8);
 
             return response()->json([
                 'code' => Response::HTTP_OK,
@@ -161,7 +176,7 @@ class LeafletController extends Controller
             ])
                 ->findOrFail($leaflet_id);
 
-            $file = Storage::path($leaflet->mFile[0]->fullUrl);
+            $file = Storage::disk('public')->path($leaflet->mFile[0]->fullUrl);
 
             return response()->download($file, $leaflet->judul . '.' . '.pdf');
         } catch (\Throwable $th) {

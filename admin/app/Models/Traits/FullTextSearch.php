@@ -20,9 +20,9 @@ trait FullTextSearch
         $words = explode(' ', $term);
 
         foreach ($words as $key => $word) {
-            if (strlen($word) >= 3) {
+            // if (strlen($word) >= 3) {
                 $words[$key] = "{$word}*";
-            }
+            // }
         }
 
         return implode(' ', $words);

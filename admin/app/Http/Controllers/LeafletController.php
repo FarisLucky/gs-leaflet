@@ -173,9 +173,14 @@ class LeafletController extends Controller
     public function viewCover($leaflet_id)
     {
         try {
+            $order = request('order');
+
             $leaflet = MLeaflet::with([
-                'mFile' => function ($query) {
+                'mFile' => function ($query) use ($order) {
                     $query->where('jenis', MFile::VIEW);
+                    if (isset($order)) {
+                        $query->where('order', $order);
+                    }
                 }
             ])->findOrFail($leaflet_id);
 

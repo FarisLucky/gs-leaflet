@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
+Route::name('api.')->group(function () {
     Route::prefix('/leaflet')->name('leaflet.')->group(function () {
         Route::get('', [LeafletController::class, 'index'])->name('index');
         Route::get('/data-file/{idLeaflet}', [LeafletController::class, 'dataFile'])->name('data_file');

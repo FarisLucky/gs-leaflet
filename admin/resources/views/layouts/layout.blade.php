@@ -11,6 +11,7 @@
 
     <meta name="description" content="" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('/leaflet.png') }}" />
@@ -136,6 +137,8 @@
     <!-- LOADING BAR JS -->
     <script src="{{ asset('/dist/libs/ldbar/loading-bar.js') }}"></script>
     <script>
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        var API_TOKEN = $('meta[name="api-token"]').attr('content');
         var loader = document.querySelector('.loader')
 
         function hideLoader() {

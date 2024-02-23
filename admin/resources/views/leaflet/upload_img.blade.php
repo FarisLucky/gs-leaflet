@@ -172,7 +172,10 @@
             let urls = $('#urlDatatable').attr('data-datatable');
             tableModal = initializeDTable('#fileTable', () => {
                 return {
-                    url: urls
+                    url: urls,
+                    headers: {
+                        Authorization: 'Bearer ' + API_TOKEN
+                    },
                 }
             })
         })

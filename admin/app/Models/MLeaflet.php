@@ -39,6 +39,11 @@ class MLeaflet extends Model
         return $this->hasMany(MFile::class, 'leaflet_id', 'id');
     }
 
+    public function mCover()
+    {
+        return $this->hasOne(MFile::class, 'leaflet_id', 'id')->where('jenis', MFile::VIEW)->where('order', 0);
+    }
+
     public function delete()
     {
         $this->mFile()->delete();

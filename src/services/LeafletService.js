@@ -60,6 +60,21 @@ class LeafletService {
             return [error]
         }
     }
+
+    async search(name) {
+        try {
+
+            const { data } = await http.get(this.url + `/list?q=${name}`)
+
+            if (data.data.length < 1) {
+                throw new Error('Leaflet Gagal dimuat')
+            }
+
+            return [null, data]
+        } catch (error) {
+            return [error]
+        }
+    }
 }
 
 export const leafletService = new LeafletService(http)
