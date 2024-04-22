@@ -75,6 +75,17 @@ class LeafletService {
             return [error]
         }
     }
+
+    async showLeaflet(id) {
+        try {
+
+            const { data } = await http.get(this.url + `/show-leaflet/${id}`)
+
+            return [null, data]
+        } catch (error) {
+            return [error]
+        }
+    }
 }
 
 export const leafletService = new LeafletService(http)

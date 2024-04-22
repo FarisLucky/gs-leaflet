@@ -77,45 +77,6 @@
             </div>
           </div>
         </div>
-        <div class="col-md-12 text-center mt-2">
-          <div class="mb-1 paginate" style="overflow-x: scroll">
-            <vue-awesome-paginate
-              :total-items="data.ttlItem"
-              :items-per-page="data.itemsPerPage"
-              :max-pages-shown="data.maxPageShow"
-              v-model="data.currentPage"
-              :on-click="onClickHandler"
-            >
-              <template #prev-button>
-                <span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="#1abc9c"
-                    width="11"
-                    height="11"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M8.122 24l-4.122-4 8-8-8-8 4.122-4 11.878 12z" />
-                  </svg>
-                </span>
-              </template>
-
-              <template #next-button>
-                <span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="#1abc9c"
-                    width="11"
-                    height="11"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M8.122 24l-4.122-4 8-8-8-8 4.122-4 11.878 12z" />
-                  </svg>
-                </span>
-              </template>
-            </vue-awesome-paginate>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -140,6 +101,7 @@ export default {
   },
   created() {
     this.getLeaflet();
+    console.log('list')
   },
   computed: {
     ...mapState(useLeafletStore, ["data"]),
@@ -150,6 +112,7 @@ export default {
       return BASE_URL + "leaflet/download/" + id;
     },
     async getLeaflet(page = 1) {
+      console.log('--- GET LEAFLET ----')
       this.$Progress.start();
       this.setSpinner(true);
       this.data.page = page;
@@ -176,9 +139,11 @@ export default {
 
     onClickHandler(page) {
       this.getLeaflet(page);
+      console.log('--- OnCLick Handler ----')
     },
-
+    
     onRefresh() {
+      console.log('--- OnRefresh Handler ----')
       this.getLeaflet();
     },
   },

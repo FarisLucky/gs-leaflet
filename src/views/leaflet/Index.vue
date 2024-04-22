@@ -34,19 +34,14 @@
 <script>
 import Detail from "./Detail.vue";
 import CariLeaflet from "@/views/leaflet/CariLeaflet.vue";
-import { useLeafletStore } from "@/stores/leaflets";
 
 import cItem from "@/assets/img/bg-1.jpg";
-import { mapState } from "pinia";
 import img from "@/assets/img/book-material.png";
 
 export default {
   components: {
     CariLeaflet,
     Detail,
-  },
-  computed: {
-    ...mapState(useLeafletStore, ["data"]),
   },
   data() {
     return {

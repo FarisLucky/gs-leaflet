@@ -16,11 +16,10 @@
               <v-select
                 v-model="leaflet"
                 :options="leaflets"
-                label="disp_txt"
                 :reduce="(leaflet) => leaflet.id"
                 class="cs-vselect"
                 placeholder="Ketik untuk Cari E-LEAFLET"
-                @search="search"
+                @search="searchLeaflet"
                 @option:selected="onSelected"
               >
                 <template v-slot:no-options="{ search, searching }">
@@ -41,7 +40,6 @@
   </div>
 </template>
 <script>
-import { http } from "@/config/http";
 import { useLeafletStore } from "@/stores/leaflets";
 import { mapState, mapActions } from "pinia";
 import { leafletService } from "@/services/LeafletService";
@@ -54,18 +52,6 @@ export default {
       leaflet: "",
     };
   },
-  watch: {
-    unit(newVal) {
-      if (newVal != "") {
-        this.leaflet = "";
-      }
-    },
-    leaflet(newVal) {
-      if (newVal != "") {
-        this.unit = "";
-      }
-    },
-  },
   computed: {
     ...mapState(useLeafletStore, ["data"]),
   },
@@ -75,65 +61,66 @@ export default {
       this.leaflets = []
       this.leaflet = "";
     },
-    async search(name, loading) {
-        this.leaflets = []
-        
-        loading(true);
+    async searchLeaflet(name, loading) {
+        console.log(this.data.leaflets)
+        if(name.length > 1) {
 
-        const [err, leaflets] = await leafletService.search(name);
+          loading(true);
 
-        if (err) {
-          alert("LEAFLET GAGAL DIMUAT");
-        loading(false);
+          const [err, leaflets] = await leafletService.search(name);
 
-          return;
-        }
+          if (err) {
+            alert("LEAFLET GAGAL DIMUAT");
+          loading(false);
 
-        this.data.currentPage = leaflets.data.current_page;
-        this.data.ttlItem = leaflets.data.total;
-        this.data.itemsPerPage = leaflets.data.per_page;
-        this.data.maxPageShow = leaflets.data.per_page;
-        this.setLeaflet(leaflets.data.data);
-        
-        leaflets.data.data?.forEach((leaflet)=>{
-          this.leaflets.push({
-            id:leaflet.id,
-            disp_txt:leaflet.disp_txt,
+            return;
+          }
+
+          this.data.currentPage = leaflets.data.current_page;
+          this.data.ttlItem = leaflets.data.total;
+          this.data.itemsPerPage = leaflets.data.per_page;
+          this.data.maxPageShow = leaflets.data.per_page;
+          this.setLeaflet(leaflets.data.data);
+          
+          this.leaflets = leaflets.data.data?.map((leaflet)=>{
+            return {
+              id:leaflet.id,
+              label:leaflet.disp_txt,
+            }
           })
-        })
-        
-        loading(false);
+          loading(false);
+        }
+    },
+    async onSelected2(val) {
+      console.log(val)
+    },
+    async onSearchBlur(val) {
+      console.log('--- On Search Blur ----')
+      console.log(val)
     },
     async onSelected(val) {
       this.$Progress.start();
-      this.data.url = `fr-leaflet/show-leaflet/${val.id}`;
-      await http
-        .get(this.data.url)
-        .then((resp) => {
-          console.log(resp.data.data)
-          this.data.currentPage = resp.data.data.current_page;
-          this.data.ttlItem = resp.data.data.total;
-          this.data.itemsPerPage = resp.data.data.per_page;
-          this.data.maxPageShow = resp.data.data.per_page;
-          this.data.leaflets = resp.data.data.data
-          console.log(val)
-          console.log(this.data.leaflets)
-          this.$Progress.finish();
-        })
-        .catch((err) => {
-          alert("Gagal Loading");
-          this.$Progress.fail();
-        })
-    },
-    asyncFind(query) {
-      this.isLoading = true;
-      ajaxFindCountry(query).then((response) => {
-        this.countries = response;
-        this.isLoading = false;
-      });
-    },
-    clearAll() {
-      this.selectedCountries = [];
+      
+      const [err, leaflet] = await leafletService.showLeaflet(val.id);
+
+      if (err) {
+        alert("LEAFLET GAGAL DIMUAT");
+        this.$Progress.fail();
+
+        return;
+      }
+      
+      console.log('---- search ----')
+      console.log(this.leaflet)
+      console.log(this.leaflets)
+
+      this.data.currentPage = leaflet.data.current_page;
+      this.data.ttlItem = leaflet.data.total;
+      this.data.itemsPerPage = leaflet.data.per_page;
+      this.data.maxPageShow = leaflet.data.per_page;
+      this.setLeaflet(leaflet.data.data)
+
+      this.$Progress.fail();
     },
   },
 };

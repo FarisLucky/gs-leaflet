@@ -10,7 +10,8 @@ export const useLeafletStore = defineStore('useLeafletStore', {
       ttlItem: 1,
       itemsPerPage: 1,
       maxPageShow: 1,
-      loading: false
+      loading: false,
+      from: null,
     },
   }),
   actions: {
