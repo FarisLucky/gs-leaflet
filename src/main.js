@@ -7,7 +7,7 @@ import VueAwesomePaginate from "vue-awesome-paginate";
 import VueProgressBar from "@aacassandra/vue3-progressbar";
 import easySpinner from 'vue-easy-spinner';
 import VueFullscreen from 'vue-fullscreen'
-import VueLazyload from 'vue-lazyload'
+import VueLazyLoad from 'vue3-lazyload'
 
 import 'vue-awesome-paginate/dist/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -19,9 +19,6 @@ import 'bootstrap/dist/js/bootstrap.js'
 import 'aos/dist/aos.css'
 import 'vue3-carousel/dist/carousel.css'
 import 'vue-select/dist/vue-select.css';
-
-import loadimage from "@/assets/img/img-loader.gif"
-import errorimage from "@/assets/img/img-error.gif"
 
 const options = {
     color: "#34495e",
@@ -47,13 +44,8 @@ app.use(easySpinner, {
     /*options*/
     prefix: 'easy',
 })
+app.use(VueLazyLoad)
 app.component("v-select", vSelect);
 app.use(VueFullscreen)
-app.use(VueLazyload, {
-    preLoad: 1.3,
-    error: errorimage,
-    loading: loadimage,
-    attempt: 1
-})
 
 app.mount('#app')

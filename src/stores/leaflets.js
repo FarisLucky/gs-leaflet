@@ -3,15 +3,13 @@ import { defineStore } from "pinia";
 export const useLeafletStore = defineStore('useLeafletStore', {
   state: () => ({
     data: {
-      page: '',
       url: '',
       leaflets: [],
       currentPage: 1,
       ttlItem: 1,
       itemsPerPage: 1,
       maxPageShow: 1,
-      loading: false,
-      from: null,
+      loading: false
     },
   }),
   actions: {

@@ -25,12 +25,12 @@ Route::middleware(["auth"])->group(function () {
     Route::post("/leaflet/upload-file/{id?}", [LeafletController::class, "uploadFile"])->name("leaflet.upload_file");
     Route::get("/leaflet/file/{name}", [LeafletController::class, "getFile"])->name("leaflet.file.data");
     Route::get("/leaflet/showFile/{leaflet_id?}", [LeafletController::class, "showFile"])->name("leaflet.showFile");
-    Route::get("/leaflet/download/{leaflet_id}", [\App\Http\Controllers\Frontend\LeafletController::class, "download"]);
     Route::resource("/m-unit", MUnitController::class)
         ->only(['index', 'store', 'show', 'update', 'destroy'])
         ->names("m_unit");
 });
 
+    Route::get("/leaflet/download/{leaflet_id}", [\App\Http\Controllers\Frontend\LeafletController::class, "download"]);
 Route::get("/leaflet/pdf-file/{id?}", [LeafletController::class, "pdfFile"])->name("pdf_file");
 Route::get("/leaflet/view-cover/{id?}", [LeafletController::class, "viewCover"])->name("view_cover");
 Route::get("/leaflet/view-leaflet/{id?}", [LeafletController::class, "viewLeaflet"])->name("view_leaflet");

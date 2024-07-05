@@ -1,11 +1,11 @@
 import axios from 'axios'
 // import app from "../main";
 
-const url = "https://e-leaflet-back.gsrs.my.id/api/"; //WEB APACHE
-const BASE_URL = "https://e-leaflet-back.gsrs.my.id/"; //WEB APACHE
+const url = "https://e-leaflet-back.gsabsen.my.id/admin/api/"; //WEB APACHE
+const BASE_URL = "https://e-leaflet-back.gsabsen.my.id/admin/"; //WEB APACHE
 
-// const url = "http://localhost/gs-leaflet-img/admin/api/"; //WEB APACHE
-// const BASE_URL = "http://localhost/gs-leaflet-img/admin/"; //WEB APACHE
+// const url = "http://localhost/gs-leaflet/admin/api/"; //WEB APACHE
+// const BASE_URL = "http://localhost/gs-leaflet/admin/"; //WEB APACHE
 
 const http = axios.create({
   baseURL: url,

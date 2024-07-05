@@ -2,47 +2,67 @@
   <div class="card">
     <div class="card-body my-3 mx-4">
       <form action="">
-        <div class="row justify-content-center">
+        <div class="row">
           <div class="col-lg-12">
             <div class="search_dokter_label">
               <strong>Temukan Leaflet yang Tepat</strong>
-              <p class="text-center">
+              <p>
                 Cari dan temukan leaflet yang tepat untuk kebutuhan anda
               </p>
             </div>
           </div>
-          <div class="col-lg-7">
+          <div class="col-lg-6">
             <div class="mb-2">
               <v-select
                 v-model="leaflet"
                 :options="leaflets"
-                :reduce="(leaflet) => leaflet.id"
+                label="disp_txt"
+                :reduce="leaflet => leaflet.id"
                 class="cs-vselect"
-                placeholder="Ketik untuk Cari E-LEAFLET"
-                @search="searchLeaflet"
+                placeholder="Cari Leaflet"
+                @search="search"
                 @option:selected="onSelected"
               >
-                <template v-slot:no-options="{ search, searching }">
-                  <template v-if="searching">
-                    Tidak ada data <em>{{ search }}</em
-                    >.
-                  </template>
-                  <em v-else style="opacity: 0.5"
-                    >Silahkan Ketik untuk cari E-Leaflet</em
-                  >
-                </template>
+                <!-- <template slot="singleLabel" slot-scope="{ option }"
+                                 -->
               </v-select>
             </div>
           </div>
+          <div class="col-lg-6">
+            <div class="mb-2">
+              <v-select
+                v-model="unit"
+                :options="units"
+                label="unit"
+                placeholder="Unit"
+                class="cs-vselect"
+                :reduce="unit => unit.unit"
+                @option:selected="onSelectedUnit"
+              >
+              </v-select>
+            </div>
+          </div>
+          <!-- <div class="col-lg-2">
+            <div class="mb-2">
+              <button
+                type="button"
+                class="btn w-100 btn-search-dokter bg-secondary"
+                @click="onReset"
+              >
+                Reset
+                <i class="bi bi-arrow-counterclockwise"></i>
+              </button>
+            </div>
+          </div> -->
         </div>
       </form>
     </div>
   </div>
 </template>
 <script>
+import { http } from "@/config/http";
 import { useLeafletStore } from "@/stores/leaflets";
 import { mapState, mapActions } from "pinia";
-import { leafletService } from "@/services/LeafletService";
 
 export default {
   name: "CariLeaflet",
@@ -50,7 +70,24 @@ export default {
     return {
       leaflets: [],
       leaflet: "",
+      units: [],
+      unit: "",
     };
+  },
+  created() {
+    this.getUnits();
+  },
+  watch: {
+    unit(newVal) {
+      if (newVal != "") {
+        this.leaflet = "";
+      }
+    },
+    leaflet(newVal) {
+      if (newVal != "") {
+        this.unit = "";
+      }
+    },
   },
   computed: {
     ...mapState(useLeafletStore, ["data"]),
@@ -58,69 +95,95 @@ export default {
   methods: {
     ...mapActions(useLeafletStore, ["setLeaflet", "setSpinner"]),
     onReset() {
-      this.leaflets = []
+      this.unit = "";
       this.leaflet = "";
     },
-    async searchLeaflet(name, loading) {
-        console.log(this.data.leaflets)
-        if(name.length > 1) {
-
-          loading(true);
-
-          const [err, leaflets] = await leafletService.search(name);
-
-          if (err) {
-            alert("LEAFLET GAGAL DIMUAT");
-          loading(false);
-
-            return;
-          }
-
-          this.data.currentPage = leaflets.data.current_page;
-          this.data.ttlItem = leaflets.data.total;
-          this.data.itemsPerPage = leaflets.data.per_page;
-          this.data.maxPageShow = leaflets.data.per_page;
-          this.setLeaflet(leaflets.data.data);
-          
-          this.leaflets = leaflets.data.data?.map((leaflet)=>{
-            return {
-              id:leaflet.id,
-              label:leaflet.disp_txt,
-            }
+    async search(name, loading) {
+      if (name.length > 3) {
+        this.$Progress.start();
+        await http
+          .get(`fr-leaflet/search/${name}`)
+          .then((resp) => {
+            this.leaflets = resp.data.data;
+            this.$Progress.finish();
           })
-          loading(false);
-        }
+          .catch((err) => {
+            alert("Gagal Loading");
+            this.$Progress.fail();
+          });
+      }
     },
-    async onSelected2(val) {
-      console.log(val)
-    },
-    async onSearchBlur(val) {
-      console.log('--- On Search Blur ----')
-      console.log(val)
+    async getUnits() {
+      this.$Progress.start();
+      await http
+        .get(`fr-leaflet/units`)
+        .then((resp) => {
+          this.units = resp.data.data;
+          this.$Progress.finish();
+        })
+        .catch((err) => {
+          alert("Gagal Loading");
+          this.$Progress.fail();
+        });
     },
     async onSelected(val) {
       this.$Progress.start();
-      
-      const [err, leaflet] = await leafletService.showLeaflet(val.id);
+      this.setSpinner(true);
+      let page = 1;
+      this.data.url = `fr-leaflet/show-leaflet/${val.id}?page=${page}`;
 
-      if (err) {
-        alert("LEAFLET GAGAL DIMUAT");
-        this.$Progress.fail();
+      await http
+        .get(this.data.url)
+        .then((resp) => {
+          this.data.currentPage = resp.data.data.current_page;
+          this.data.ttlItem = resp.data.data.total;
+          this.data.itemsPerPage = resp.data.data.per_page;
+          this.data.maxPageShow = resp.data.data.per_page;
+          this.setLeaflet(resp.data.data.data);
+          this.$Progress.finish();
+        })
+        .catch((err) => {
+          alert("Gagal Loading");
+          this.$Progress.fail();
+        })
+        .finally(() => {
+          this.setSpinner(false);
+        });
+    },
+    async onSelectedUnit(val) {
+      this.$Progress.start();
+      console.log(val.unit);
+      this.setSpinner(true);
+      let page = 1;
+      this.data.url = `fr-leaflet/show-leaflet-by-unit/${val.unit}?page=${page}`;
 
-        return;
-      }
-      
-      console.log('---- search ----')
-      console.log(this.leaflet)
-      console.log(this.leaflets)
-
-      this.data.currentPage = leaflet.data.current_page;
-      this.data.ttlItem = leaflet.data.total;
-      this.data.itemsPerPage = leaflet.data.per_page;
-      this.data.maxPageShow = leaflet.data.per_page;
-      this.setLeaflet(leaflet.data.data)
-
-      this.$Progress.fail();
+      await http
+        .get(this.data.url)
+        .then((resp) => {
+          this.data.currentPage = resp.data.data.current_page;
+          this.data.ttlItem = resp.data.data.total;
+          this.data.itemsPerPage = resp.data.data.per_page;
+          this.data.maxPageShow = resp.data.data.per_page;
+          this.setLeaflet(resp.data.data.data);
+          this.$Progress.finish();
+        })
+        .catch((err) => {
+          alert("Gagal Loading");
+          this.$Progress.fail();
+        })
+        .finally(() => {
+          this.setSpinner(false);
+        });
+    },
+    asyncFind(query) {
+      this.isLoading = true;
+      ajaxFindCountry(query).then((response) => {
+        this.countries = response;
+        this.isLoading = false;
+      });
+    },
+    clearAll() {
+      this.selectedCountries = [];
     },
   },
 };
